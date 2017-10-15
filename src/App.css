@@ -1,0 +1,50 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 60px;
+  padding: 10px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+.App-input{
+    padding:1;
+   font-size:20px;
+   font-family:Sans-serif;
+   white-space:pre;
+   align-self: center;
+   size: 1px;
+   align-content: center;
+   min-width  : 15em;
+   color: blue;
+   background-color: #E6E6E6;
+    height  : 1em;
+    length : 100px;
+
+}
+.text{
+    padding:10em;
+}
+.Scan-button{
+    background-color : #5858FA;
+    height : 2.6em;
+     align-self: center;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
