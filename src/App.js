@@ -23,8 +23,11 @@ var getJSON = function(url, callback) {
     xhr.onload = function() {
       var status = xhr.status;
       if (status == 200) {
+        //   alert('status = 200')
         callback(null, xhr.response);
+
       } else {
+          alert('else')
         callback(status);
       }
     };
@@ -41,7 +44,8 @@ class App extends Component {
         CSR:'true',
         submitClicked: false,
         isLoading:true,
-        text:''
+        text:'',
+        data:['',['','']],
 
       };
       this.handleInputChange = this.handleInputChange.bind(this);
@@ -53,8 +57,7 @@ class App extends Component {
     handleResult = function(){
         if(this.state.submitClicked && this.state.url != null){
             // this.state.submitClicked = false;
-            return [<h3 className="CSR">Showing Result for {this.state.url}</h3>, <h4 className="CSR"> This is CSR: {this.state.CSR}</h4>,
-                    <h5 className="text"> {this.state.text}</h5>]
+            return [<h3 className="result">Showing Result for {this.state.url}</h3>, <h4 className="CSR"> This is CSR: {this.state.CSR}</h4>]
         }
 
         else {
@@ -80,7 +83,9 @@ class App extends Component {
             submitClicked:true
         })
 
-        let url = 'http://www.randomtext.me/api/';
+        // let url = 'http://www.randomtext.me/api/' + this.state.url;
+        let url = 'http://95.85.10.49:3000/analyse?url=http://' +this.state.url
+        // alert(url)
 
         getJSON(url, function(err, data) {
             if (err != null) {
@@ -88,8 +93,10 @@ class App extends Component {
             } else {
                 // alert(JSON.stringify(data));
                 this.setState({
-                    text: JSON.stringify(data)
+                    data: data
+
                 })
+                // alert(JSON.stringify(data))
             }
        }.bind(this));
 
@@ -105,6 +112,16 @@ class App extends Component {
         //   alert(nameList.length)
         return nameList.length >0 ? nameList.map(this.createButton): null;
     };
+
+    createHeader= function (name) {
+        return <h5 className ="body"> {name} </h5>;
+    };
+
+     createHeaders= function (nameList) {
+        //   alert(nameList.length)
+        return nameList.length >0 ? nameList.map(this.createHeader): null;
+    };
+
 
 
 
@@ -133,7 +150,8 @@ class App extends Component {
             Scan page!
             </button>
             {this.handleResult()}
-
+            <h3 className='Title'> {this.state.data[0]}</h3>
+            {this.createHeaders(this.state.data[1])}
         </form>
       </div>
 
