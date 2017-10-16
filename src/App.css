@@ -1,72 +1,38 @@
-.App {
-  text-align: center;
+.container {
+    width: auto;
+    max-width: 900px;
+    padding: 0 15px;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.resultrow {
+    margin-top: 36px;
 }
-
-.App-header {
-  background-color: #222;
-  height: 60px;
-  padding: 10px;
-  color: white;
+.resultrow p:first-letter{
+    text-transform: capitalize
 }
-
-.App-title {
-  font-size: 1.5em;
+.resultrow .jumbotron {
+    padding: 25px
 }
-
-.App-intro {
-  font-size: large;
+.resultrow .jumbotron h3 {
+    margin-top: 0 !important;
 }
-.App-input{
-    padding:1;
-   font-size:20px;
-   font-family:Sans-serif;
-   white-space:pre;
-   align-self: center;
-   size: 1px;
-   align-content: center;
-   min-width  : 15em;
-   color: blue;
-   background-color: #E6E6E6;
-    height  : 1em;
-    length : 100px;
-
+.resultrow h3:first-letter{
+    text-transform: capitalize
 }
-.result{
-    color:green;
+.good {
+    background-color: #5cb85c
 }
-.CSR{
-    color:red;
-    padding-bottom: 0.1em;
+.bad {
+    background-color: #d9534f
 }
-.text{
-    padding:10em;
+.page-header {
+    background-color: #5058FF;
+    margin-top: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
 }
-.Scan-button{
-    background-color : #5858FA;
-    height : 2.6em;
-     align-self: center;
+.page-header .container {
+    padding: 0;
 }
-.body{
-    align-items:  left;
-    color: gray;
-    align-content: left;
-    text-align: left;
-     padding-left: 2em;
-
-}
-.Title{
-    font-size: 50;
-    text-align: left;
-    padding-left: 2em;
-
-
-}
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.page-header h1{
+    color: white;
 }

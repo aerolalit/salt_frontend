@@ -1,35 +1,19 @@
-// import {
-//   StackNavigator, TabNavigator
-// } from 'react-navigation';
-// import MainScreen from './MainScreen'
-// import ProfileScreen from './ProfileScreen'
-//
-// const BasicApp = StackNavigator({
-//   Main: {screen: MainScreen},
-//   Profile: {screen: ProfileScreen},
-// });
-//
-// export default BasicApp;
-
-import React, { Text, Component,ListView, StackNavigator, Alert, Button} from 'react';
+import React, {Text, Component, ListView, StackNavigator, Alert, Button} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 
-var getJSON = function(url, callback) {
-    var xhr = new XMLHttpRequest();
+var getJSON = function (url, callback) {
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
-    xhr.onload = function() {
-      var status = xhr.status;
-      if (status == 200) {
-        //   alert('status = 200')
-        callback(null, xhr.response);
+    xhr.onload = function () {
+        let status = xhr.status;
+        if (status === 200)
+            callback(null, xhr.response);
+         else
+            alert("Could not parse website.")
 
-      } else {
-          alert('else')
-        callback(status);
-      }
     };
     xhr.send();
 };
@@ -38,128 +22,86 @@ var getJSON = function(url, callback) {
 class App extends Component {
 
     constructor(props) {
-      super(props);
-      this.state = {
-        url:'',
-        CSR:'true',
-        submitClicked: false,
-        isLoading:true,
-        text:'',
-        data:['',['','']],
-
-      };
-      this.handleInputChange = this.handleInputChange.bind(this);
-      this.onClickButton = this.onClickButton.bind(this);
+        super(props);
+        this.state = {
+            url: '',
+            response: null,
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.onClickButton = this.onClickButton.bind(this);
     };
 
 
-
-    handleResult = function(){
-        if(this.state.submitClicked && this.state.url != null){
-            // this.state.submitClicked = false;
-            return [<h3 className="result">Showing Result for {this.state.url}</h3>, <h4 className="CSR"> This is CSR: {this.state.CSR}</h4>]
-        }
-
-        else {
-            return null;
-        }
-    }
-
-
-    handleInputChange(event){
-        var target = event.target;
-        var value = target.value;
+    handleInputChange(event) {
+        let target = event.target;
+        let value = target.value;
 
         this.setState({
-            url:value
+            url: value
         });
 
     };
 
 
+    onClickButton(event) {
+        let url = 'http://95.85.10.49:3000/analyse?url=' + this.state.url;
 
-    onClickButton(event){
-        this.setState({
-            submitClicked:true
-        })
+        getJSON(url, function (err, data) {
+            this.setState({
+                response: data
+            })
+        }.bind(this));
 
-        // let url = 'http://www.randomtext.me/api/' + this.state.url;
-        let url = 'http://95.85.10.49:3000/analyse?url=http://' +this.state.url
-        // alert(url)
-
-        getJSON(url, function(err, data) {
-            if (err != null) {
-                alert('Something went wrong: ' + err);
-            } else {
-                // alert(JSON.stringify(data));
-                this.setState({
-                    data: data
-
-                })
-                // alert(JSON.stringify(data))
-            }
-       }.bind(this));
-
-        if(!this.state.url) alert('Enter a valid url');
+        if (!this.state.url) alert('Enter a valid url');
     }
 
-
-    createButton= function (name) {
-        return <button> {name} </button>;
-    };
-
-     createButtons= function (nameList) {
-        //   alert(nameList.length)
-        return nameList.length >0 ? nameList.map(this.createButton): null;
-    };
-
-    createHeader= function (name) {
-        return <h5 className ="body"> {name} </h5>;
-    };
-
-     createHeaders= function (nameList) {
-        //   alert(nameList.length)
-        return nameList.length >0 ? nameList.map(this.createHeader): null;
+    renderresult = function () {
+        return <div className="row resultrow">
+            <div className={"jumbotron " + (this.state.response.csr ? "good" : "bad")}>
+                <h3> {this.state.response.lines[0]}</h3>
+                {this.state.response.lines[1].map(function(object, i){
+                    return <p key={i} >{object}</p>;
+                })}
+            </div>
+        </div>
     };
 
 
+    render() {
+        return (
+            <div>
+                <div className="page-header">
+                    <div className="container">
+                        <h1>Welcome to SALT!!!</h1>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="row">
+                        <p className="lead">Enter the url of the website that you want to analze</p>
+                        <div className="input-group input-group-lg">
+                            <input type="url"
+                                   name="url"
+                                   className="form-control"
+                                   placeholder="Enter url here..."
+                                   onChange={this.handleInputChange}
+                            />
+                            <span className="input-group-btn">
+                            <button className="btn btn-default" onClick={this.onClickButton} type='button'>
+                                Scan page!
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                    {
+                        this.state.response ? this.renderresult() : null
+                    }
+                </div>
+            </div>
 
 
-  render() {
-
-
-
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to SALT!!!</h1>
-        </header>
-        <p className="App-intro">
-          Enter the <code>url</code> of the website that you want to analze !!!
-        </p>
-
-
-        <form >
-          <input className="App-input" type="text"
-            name="url"
-            placeholder="Enter url here..."
-
-            onChange={this.handleInputChange}
-          />
-          <button className="Scan-button" onClick={this.onClickButton} type='button'>
-            Scan page!
-            </button>
-            {this.handleResult()}
-            <h3 className='Title'> {this.state.data[0]}</h3>
-            {this.createHeaders(this.state.data[1])}
-        </form>
-      </div>
-
-    );
-  }
+        )
+    }
 }
-
-
 
 
 export default App;
